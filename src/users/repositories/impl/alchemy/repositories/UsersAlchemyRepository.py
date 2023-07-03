@@ -12,13 +12,13 @@ __all__ = ['UsersAlchemyRepository']
 class UsersAlchemyRepository(UsersRepository):
 
     def __init__(self, session: Session) -> None:
-        self.session = session
+        self.__session = session
 
     def get_by_guid(self, guid: UUID) -> Users:
         """Получить пользователя по id"""
 
         user = (
-            self.session
+            self.__session
             .query(UsersAlchemy)
             .filter_by(guid=guid)
             .first()
@@ -32,7 +32,7 @@ class UsersAlchemyRepository(UsersRepository):
     def create(self, user: Users) -> None:
         """Создание пользователя"""
 
-        self.session.add(UsersAlchemyMapper.to_entity(user))
+        self.__session.add(UsersAlchemyMapper.to_entity(user))
 
 
     def update(self, guid: UUID, user: Users) -> None:
@@ -48,4 +48,4 @@ class UsersAlchemyRepository(UsersRepository):
         """Удалить пользователя по id"""
 
         user = UsersAlchemyMapper.to_entity(self.get_by_guid(guid))
-        self.session.delete(user)
+        self.__session.delete(user)
