@@ -56,7 +56,7 @@ class Application:
         # ! Add и Update должны быть POST? Тогда явно писать в url /add /update?
         self.app.add_api_route(
             '/users',
-            endpoint=users_view.get_by_id,
+            endpoint=users_view.get_by_guid,
             methods=['GET'],
             tags=['Получить пользователя'],
         )
@@ -74,7 +74,7 @@ class Application:
         )
         self.app.add_api_route(
             '/users',
-            endpoint=users_view.delete_by_id,
+            endpoint=users_view.delete_by_guid,
             methods=['DELETE'],
             tags=['Удалить пользователя'],
         )

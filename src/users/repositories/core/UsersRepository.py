@@ -6,7 +6,7 @@ __all__ = ['UsersRepository']
 
 class UsersRepository:
 
-    def get_by_id(self, id: int) -> None:
+    def get_by_guid(self, guid: str) -> None:
         """Получить пользователя по id"""
         raise NotImplementedError()
 
@@ -14,10 +14,10 @@ class UsersRepository:
         """Создание пользователя"""
         raise NotImplementedError()
 
-    def update(self, id: int, user: Users) -> None:
+    def update(self, guid: str, user: Users) -> None:
         """Изменить пользователя"""
         raise NotImplementedError()
 
-    def delete_by_id(self, id: int) -> None:
+    def delete_by_guid(self, guid: str) -> None:
         """Удалить пользователя по id"""
         raise NotImplementedError()

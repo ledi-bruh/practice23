@@ -11,10 +11,10 @@ class UsersMemoryRepository(UsersRepository):
     def __init__(self) -> None:
         self.session: t.MutableMapping[int, Users] = {}
 
-    def get_by_id(self, id: int) -> Users:
+    def get_by_guid(self, guid: str) -> Users:
         """Получить пользователя по id"""
 
-        if (user := self.session.get(id)) is None:
+        if (user := self.session.get(guid)) is None:
             raise UserNotFoundException()
 
         return user
@@ -22,18 +22,17 @@ class UsersMemoryRepository(UsersRepository):
     def create(self, user: Users) -> None:
         """Создание пользователя"""
 
-        self.session[user.id] = user
+        self.session[user.guid] = user
 
-    def update(self, id: int, user: Users) -> None:
+    def update(self, guid: str, user: Users) -> None:
         """Изменить пользователя"""
 
-        user_to_update = self.session.get(id)
+        user_to_update = self.session.get(guid)
 
         for field, value in user:
             setattr(user_to_update, field, value)
 
-    def delete_by_id(self, id: int) -> None:
+    def delete_by_guid(self, guid: str) -> None:
         """Удалить пользователя по id"""
-        print(type(id))
-        print(self.session)
-        print(self.session.pop(id, None))
+
+        self.session.pop(guid)
