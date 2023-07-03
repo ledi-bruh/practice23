@@ -2,4 +2,5 @@ __all__ = ['UserNotFoundException']
 
 
 class UserNotFoundException(Exception):
-    pass
+
+    __slots__ = ()

@@ -7,6 +7,8 @@ __all__ = ['UsersRepository']
 
 class UsersRepository:
 
+    __slots__ = ()
+
     def get_by_guid(self, guid: UUID) -> None:
         """Получить пользователя по id"""
         raise NotImplementedError()

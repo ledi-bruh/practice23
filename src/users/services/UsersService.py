@@ -8,6 +8,8 @@ __all__ = ['UsersService']
 
 class UsersService:
 
+    __slots__ = ('__repository', )
+
     def __init__(self, repository: UsersRepository) -> None:
         self.__repository = repository
 

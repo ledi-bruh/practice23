@@ -7,6 +7,8 @@ __all__ = ['UsersAlchemyMapper']
 
 class UsersAlchemyMapper:
 
+    __slots__ = ()
+
     @staticmethod
     async def to_entity(domain: Users) -> UsersAlchemy:
         return UsersAlchemy(**dict(domain))

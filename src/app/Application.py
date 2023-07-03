@@ -13,12 +13,14 @@ __all__ = ['Application', 'app']
 
 class Application:
 
+    __slots__ = ('config', 'app', )
+
     def __init__(self, config: Config) -> None:
         self.config = config
         self.app = FastAPI(
             title='Test service',
             description='',
-            version='0.1',
+            version='0.3',
         )
 
     def make_session(self):
@@ -38,7 +40,7 @@ class Application:
             autocommit=False,
             autoflush=False,
         )
-        
+
         return Session()
 
     def start(self) -> None:

@@ -11,6 +11,8 @@ __all__ = ['UsersAlchemyRepository']
 
 class UsersAlchemyRepository(UsersRepository):
 
+    __slots__ = ('__session', )
+
     def __init__(self, session: Session) -> None:
         self.__session = session
 
@@ -34,7 +36,6 @@ class UsersAlchemyRepository(UsersRepository):
 
         self.__session.add(UsersAlchemyMapper.to_entity(user))
 
-
     def update(self, guid: UUID, user: Users) -> None:
         """Изменить пользователя"""
 
@@ -42,7 +43,6 @@ class UsersAlchemyRepository(UsersRepository):
 
         for field, value in user:
             setattr(user, field, value)
-
 
     def delete_by_guid(self, guid: UUID) -> None:
         """Удалить пользователя по id"""

@@ -9,6 +9,8 @@ __all__ = ['UsersMemoryRepository']
 
 class UsersMemoryRepository(UsersRepository):
 
+    __slots__ = ('__session', )
+
     def __init__(self) -> None:
         self.__session: t.MutableMapping[int, Users] = {}
 
