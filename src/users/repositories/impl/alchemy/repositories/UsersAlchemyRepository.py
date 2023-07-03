@@ -1,3 +1,4 @@
+from uuid import UUID
 from sqlalchemy.orm import Session
 from src.users.repositories.core import UsersRepository, UserNotFoundException
 from src.users.repositories.impl.alchemy.mappers import UsersAlchemyMapper
@@ -13,7 +14,7 @@ class UsersAlchemyRepository(UsersRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def get_by_guid(self, guid: str) -> Users:
+    def get_by_guid(self, guid: UUID) -> Users:
         """Получить пользователя по id"""
 
         user = (
@@ -22,6 +23,7 @@ class UsersAlchemyRepository(UsersRepository):
             .filter_by(guid=guid)
             .first()
         )
+
         if user is None:
             raise UserNotFoundException()
 
@@ -33,17 +35,17 @@ class UsersAlchemyRepository(UsersRepository):
         self.session.add(UsersAlchemyMapper.to_entity(user))
 
 
-    def update(self, guid: str, user: Users) -> None:
+    def update(self, guid: UUID, user: Users) -> None:
         """Изменить пользователя"""
-        
+
         user = UsersAlchemyMapper.to_entity(self.get_by_guid(guid))
-        
+
         for field, value in user:
             setattr(user, field, value)
 
 
-    def delete_by_guid(self, guid: str) -> None:
+    def delete_by_guid(self, guid: UUID) -> None:
         """Удалить пользователя по id"""
-        
+
         user = UsersAlchemyMapper.to_entity(self.get_by_guid(guid))
         self.session.delete(user)
