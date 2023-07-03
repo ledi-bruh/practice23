@@ -15,4 +15,4 @@ class Config(BaseModel):
             self.__dict__.update(safe_load(f))
 
 
-config = Config('../config.yaml')
+config = Config('config.yaml')
