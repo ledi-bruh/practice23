@@ -53,9 +53,8 @@ class Application:
         users_service = UsersService(users_repository)
         users_view = UsersView(users_service)
 
-        # ! Add и Update должны быть POST? Тогда явно писать в url /add /update?
         self.app.add_api_route(
-            '/users',
+            '/users/{user_guid}',
             endpoint=users_view.get_by_guid,
             methods=['GET'],
             tags=['Получить пользователя'],
@@ -67,13 +66,13 @@ class Application:
             tags=['Создать пользователя'],
         )
         self.app.add_api_route(
-            '/users',
+            '/users/{user_guid}',
             endpoint=users_view.update,
             methods=['PUT'],
             tags=['Изменить пользователя'],
         )
         self.app.add_api_route(
-            '/users',
+            '/users/{user_guid}',
             endpoint=users_view.delete_by_guid,
             methods=['DELETE'],
             tags=['Удалить пользователя'],

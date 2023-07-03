@@ -8,9 +8,9 @@ __all__ = ['UsersAlchemyMapper']
 class UsersAlchemyMapper:
 
     @staticmethod
-    async def to_entity(self, domain: Users) -> UsersAlchemy:
-        ...
+    async def to_entity(domain: Users) -> UsersAlchemy:
+        return UsersAlchemy(**dict(domain))
 
     @staticmethod
-    async def to_domain(self, entity: UsersAlchemy) -> Users:
-        ...
+    async def to_domain(entity: UsersAlchemy) -> Users:
+        return Users(**entity.__dict__)
