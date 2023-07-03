@@ -79,6 +79,5 @@ class Application:
         )
 
 
-app = Application(config)
-
+app = Application(config=config)
 app.start()
