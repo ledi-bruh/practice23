@@ -15,7 +15,7 @@ class UsersMemoryRepository(UsersRepository):
         self.__session: t.MutableMapping[int, Users] = {}
 
     def get_by_guid(self, guid: UUID) -> Users:
-        """Получить пользователя по id"""
+        """Получить пользователя по guid"""
 
         if (user := self.__session.get(guid)) is None:
             raise UserNotFoundException()
@@ -36,6 +36,6 @@ class UsersMemoryRepository(UsersRepository):
             setattr(user_to_update, field, value)
 
     def delete_by_guid(self, guid: UUID) -> None:
-        """Удалить пользователя по id"""
+        """Удалить пользователя по guid"""
 
         self.__session.pop(guid)

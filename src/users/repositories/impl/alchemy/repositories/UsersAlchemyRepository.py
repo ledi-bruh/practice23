@@ -17,7 +17,7 @@ class UsersAlchemyRepository(UsersRepository):
         self.__session = session
 
     def get_by_guid(self, guid: UUID) -> Users:
-        """Получить пользователя по id"""
+        """Получить пользователя по guid"""
 
         user = (
             self.__session
@@ -45,7 +45,7 @@ class UsersAlchemyRepository(UsersRepository):
             setattr(user, field, value)
 
     def delete_by_guid(self, guid: UUID) -> None:
-        """Удалить пользователя по id"""
+        """Удалить пользователя по guid"""
 
         user = UsersAlchemyMapper.to_entity(self.get_by_guid(guid))
         self.__session.delete(user)
