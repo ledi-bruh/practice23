@@ -1,10 +1,33 @@
 import uvicorn
-from src.app import app, config
+from fastapi import FastAPI
+
+from .app import Application, Config, read_config
 
 
-uvicorn.run(
-    'src.app:app.app',
-    host=config.app['host'],
-    port=config.app['port'],
-    reload=True,
+app = FastAPI(
+    title='Summer Practice 2023',
+    description='',
+    version='0.4',
 )
+
+config = Config(**read_config('config.yml'))
+application = Application(config=config, app=app)
+
+
+@app.on_event('startup')
+async def startup():
+    application.start()
+
+
+@app.on_event('shutdown')
+async def shutdown():
+    application.stop()
+
+
+if __name__ == '__main__':
+    uvicorn.run(
+        'src.__main__:app',
+        host=config.app['host'],
+        port=config.app['port'],
+        reload=True,
+    )

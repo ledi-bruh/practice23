@@ -1,2 +1,2 @@
-from .Config import *
+from .config import *
 from .Application import *
