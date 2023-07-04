@@ -1,5 +1,5 @@
 from uuid import UUID
-from src.users.services.Users import Users
+from src.users.services.User import User
 
 
 __all__ = ['UsersRepository']
@@ -13,11 +13,11 @@ class UsersRepository:
         """Получить пользователя по id"""
         raise NotImplementedError()
 
-    def create(self, user: Users) -> Users:
+    def create(self, user: User) -> User:
         """Создание пользователя"""
         raise NotImplementedError()
 
-    def update(self, guid: UUID, user: Users) -> None:
+    def update(self, guid: UUID, user: User) -> None:
         """Изменить пользователя"""
         raise NotImplementedError()
 

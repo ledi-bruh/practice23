@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from src.users.repositories.core import UsersRepository, UserNotFoundException
 from src.users.repositories.impl.alchemy.mappers import UsersAlchemyMapper
 from src.users.repositories.impl.alchemy.models import UsersAlchemy
-from src.users.services.Users import Users
+from src.users.services.User import User
 
 
 __all__ = ['UsersAlchemyRepository']
@@ -16,7 +16,7 @@ class UsersAlchemyRepository(UsersRepository):
     def __init__(self, session: Session) -> None:
         self.__session = session
 
-    def get_by_guid(self, guid: UUID) -> Users:
+    def get_by_guid(self, guid: UUID) -> User:
         """Получить пользователя по guid"""
 
         user = (
@@ -31,12 +31,12 @@ class UsersAlchemyRepository(UsersRepository):
 
         return UsersAlchemyMapper.to_domain(user)
 
-    def create(self, user: Users) -> None:
+    def create(self, user: User) -> None:
         """Создание пользователя"""
 
         self.__session.add(UsersAlchemyMapper.to_entity(user))
 
-    def update(self, guid: UUID, user: Users) -> None:
+    def update(self, guid: UUID, user: User) -> None:
         """Изменить пользователя"""
 
         user = UsersAlchemyMapper.to_entity(self.get_by_guid(guid))

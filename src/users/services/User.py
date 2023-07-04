@@ -1,10 +1,10 @@
 from pydantic import BaseModel, UUID4
 
 
-__all__ = ['Users']
+__all__ = ['User']
 
 
-class Users(BaseModel):
+class User(BaseModel):
 
     guid: UUID4
     firstname: str
