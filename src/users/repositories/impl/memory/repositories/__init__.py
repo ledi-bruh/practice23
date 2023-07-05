@@ -1,1 +1,2 @@
-from src.users.repositories.impl.memory.repositories.UsersMemoryRepository import *
+from .UsersMemoryRepository import *
+from .UsersMemoryRepositoryBuilder import *

@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from sqlalchemy import create_engine
-from sqlalchemy.engine import URL
-from sqlalchemy.orm import sessionmaker
 
 from .config import Config
 from src.users.services import UsersService
 from src.users.presentation import UsersView
-from src.users.repositories import UsersRepository, UsersMemoryRepository, UsersAlchemyRepository
+from src.users.repositories import (
+    UsersRepositoryFabric,
+    UsersMemoryRepositoryBuilder, UsersAlchemyRepositoryBuilder
+)
 
 
 __all__ = ['Application']
@@ -20,34 +20,14 @@ class Application:
         self.__config = config
         self.__app = app
 
-    def make_session(self):
-        connection_string = URL.create(
-            drivername=self.__config.repository['db_driver'],
-            username=self.__config.repository['db_login'],
-            password=self.__config.repository['db_password'],
-            host=self.__config.repository['db_host'],
-            port=self.__config.repository['db_port'],
-            database=self.__config.repository['db_database']
-        )
-
-        engine = create_engine(connection_string)
-
-        Session = sessionmaker(
-            engine,
-            autocommit=False,
-            autoflush=False,
-        )
-
-        return Session()
-
     def start(self) -> None:
-        users_repository: UsersRepository
+        users_repository_fabric = UsersRepositoryFabric()
+        users_repository_fabric.register_builder('memory', UsersMemoryRepositoryBuilder())
+        users_repository_fabric.register_builder('alchemy', UsersAlchemyRepositoryBuilder())
 
-        if self.__config.repository['type'] == 'memory':
-            users_repository = UsersMemoryRepository()
-        elif self.__config.repository['type'] == 'alchemy':
-            session = self.make_session()
-            users_repository = UsersAlchemyRepository(session)
+        users_repository = users_repository_fabric.get_instance(
+            self.__config.repository
+        )
 
         users_service = UsersService(users_repository)
         users_view = UsersView(users_service)
