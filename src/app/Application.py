@@ -25,9 +25,7 @@ class Application:
         users_repository_fabric.register_builder('memory', UsersMemoryRepositoryBuilder())
         users_repository_fabric.register_builder('alchemy', UsersAlchemyRepositoryBuilder())
 
-        users_repository = users_repository_fabric.get_instance(
-            self.__config.repository
-        )
+        users_repository = users_repository_fabric.get_instance(self.__config.repository)
 
         users_service = UsersService(users_repository)
         users_view = UsersView(users_service)
