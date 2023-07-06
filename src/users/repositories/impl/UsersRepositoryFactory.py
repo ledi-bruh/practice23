@@ -3,10 +3,10 @@ import typing as t
 from ..core import UsersRepository, UsersRepositoryBuilder
 
 
-__all__ = ['UsersRepositoryFabric']
+__all__ = ['UsersRepositoryFactory']
 
 
-class UsersRepositoryFabric:
+class UsersRepositoryFactory:
 
     __slots__ = ('__builders', )
 
@@ -16,9 +16,7 @@ class UsersRepositoryFabric:
     def register_builder(self, type: str, builder: UsersRepositoryBuilder) -> None:
         self.__builders[type] = builder
 
-    def get_instance(self, repository_config: t.Mapping) -> UsersRepository:
-        type = repository_config.get('type')
-
+    def get_instance(self, type: str, repository_config: t.Mapping) -> UsersRepository:
         if not (builder := self.__builders.get(type)):
             raise Exception(f'UsersRepositoryBuilder with type {type} not found.')
 

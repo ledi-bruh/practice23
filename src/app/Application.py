@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
 from .config import Config
-from src.users.services import UsersService
-from src.users.presentation import UsersView
-from src.users.repositories import (
-    UsersRepositoryFabric,
+from ..users.services import UsersService
+from ..users.presentation import UsersView
+from ..users.repositories import (
+    UsersRepositoryFactory,
     UsersMemoryRepositoryBuilder, UsersAlchemyRepositoryBuilder
 )
 
@@ -21,11 +21,14 @@ class Application:
         self.__app = app
 
     def start(self) -> None:
-        users_repository_fabric = UsersRepositoryFabric()
+        users_repository_fabric = UsersRepositoryFactory()
         users_repository_fabric.register_builder('memory', UsersMemoryRepositoryBuilder())
         users_repository_fabric.register_builder('alchemy', UsersAlchemyRepositoryBuilder())
 
-        users_repository = users_repository_fabric.get_instance(self.__config.repository)
+        users_repository = users_repository_fabric.get_instance(
+            self.__config.repository.get('type'),
+            self.__config.repository
+        )
 
         users_service = UsersService(users_repository)
         users_view = UsersView(users_service)
