@@ -28,3 +28,11 @@ class Event:
     @property
     def event_type(self):
         return self._event_type
+
+    @property
+    def starts_at(self):
+        return self._interval.starts_at
+
+    @property
+    def ends_at(self):
+        return self._interval.ends_at

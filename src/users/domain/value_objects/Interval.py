@@ -19,7 +19,7 @@ class Interval:
     def __check(self, starts_at: dt.datetime, ends_at: dt.datetime) -> None:
         if ends_at < starts_at:
             raise Exception('starts_at must be less than ends_at.')
-#! add protocol for property and .prop
+
     @property
     def starts_at(self):
         return self._starts_at

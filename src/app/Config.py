@@ -4,7 +4,10 @@ from pathlib import Path
 from yaml import safe_load
 
 
-__all__ = ['Config', 'read_config']
+__all__ = [
+    'Config',
+    'read_config',
+]
 
 
 class Config(BaseModel):
