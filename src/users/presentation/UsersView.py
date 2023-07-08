@@ -1,6 +1,6 @@
 from pydantic import UUID4
-from src.users.services import UsersService
-from src.users.repositories.core import UserToCreate, UserToUpdate
+from src.users.application import UsersService
+from ..infrastructure.repositories.core import UserToCreate, UserToUpdate
 
 
 __all__ = ['UsersView']

@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 
 from .config import Config
-from ..users.services import UsersService
+from ..users.application import UsersService
 from ..users.presentation import UsersView
-from ..users.repositories import (
-    UsersRepositoryFactory,
-    UsersMemoryRepositoryBuilder, UsersAlchemyRepositoryBuilder
+from ..users.infrastructure.repositories import (
+    UsersRepositoryFactoryStore,
+    UsersMemoryRepositoryFactory, UsersAlchemyRepositoryFactory
 )
 
 
@@ -20,14 +20,14 @@ class Application:
         self.__config = config
         self.__app = app
 
-    def start(self) -> None:
-        users_repository_fabric = UsersRepositoryFactory()
-        users_repository_fabric.register_builder('memory', UsersMemoryRepositoryBuilder())
-        users_repository_fabric.register_builder('alchemy', UsersAlchemyRepositoryBuilder())
+    async def start(self) -> None:
+        users_repository_fabric_store = UsersRepositoryFactoryStore()
+        users_repository_fabric_store.register_factory('memory', UsersMemoryRepositoryFactory())
+        users_repository_fabric_store.register_factory('alchemy', UsersAlchemyRepositoryFactory())
 
-        users_repository = users_repository_fabric.get_instance(
+        users_repository = users_repository_fabric_store.get_instance(
             self.__config.repository.get('type'),
-            self.__config.repository
+            self.__config.repository,
         )
 
         users_service = UsersService(users_repository)
@@ -58,5 +58,5 @@ class Application:
             tags=['Удалить пользователя'],
         )
 
-    def stop(self):
+    async def stop(self):
         pass
