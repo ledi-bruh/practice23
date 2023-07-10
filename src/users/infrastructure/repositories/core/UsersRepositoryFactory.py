@@ -3,9 +3,7 @@ import typing as t
 from .UsersRepository import UsersRepository
 
 
-__all__ = [
-    'UsersRepositoryFactory',
-]
+__all__ = ['UsersRepositoryFactory']
 
 
 class UsersRepositoryFactory:

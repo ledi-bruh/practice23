@@ -18,7 +18,7 @@ class IntervalPropertyProtocol(t.Protocol):
     @property
     def starts_at(self):
         ...
-    
+
     @property
     def ends_at(self):
         ...

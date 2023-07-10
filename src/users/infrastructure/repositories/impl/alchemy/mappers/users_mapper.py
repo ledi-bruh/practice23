@@ -25,6 +25,5 @@ def user_db_to_domain(db_user: UsersAlchemy) -> User:
         middlename=db_user.middlename,
         lastname=db_user.lastname,
     )
-    #? events по идее добавятся
     user._events_map = {e._id: e for e in user._events}
     return user

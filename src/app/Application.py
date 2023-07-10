@@ -35,7 +35,7 @@ class Application:
 
         self.__app.add_api_route(
             '/users/{user_guid}',
-            endpoint=users_view.get_by_guid,
+            endpoint=users_view.get_by_id,
             methods=['GET'],
             tags=['Получить пользователя'],
         )
@@ -53,7 +53,7 @@ class Application:
         )
         self.__app.add_api_route(
             '/users/{user_guid}',
-            endpoint=users_view.delete_by_guid,
+            endpoint=users_view.delete_by_id,
             methods=['DELETE'],
             tags=['Удалить пользователя'],
         )

@@ -7,9 +7,7 @@ from .UsersAlchemyRepository import UsersAlchemyRepository
 from ....core import UsersRepositoryFactory
 
 
-__all__ = [
-    'UsersAlchemyRepositoryFactory',
-]
+__all__ = ['UsersAlchemyRepositoryFactory']
 
 
 class UsersAlchemyRepositoryFactory(UsersRepositoryFactory):

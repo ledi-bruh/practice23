@@ -1,13 +1,10 @@
 from pydantic import BaseModel
 
 
-__all__ = [
-    'UserToUpdate',
-]
+__all__ = ['NameCreateUpdate']
 
 
-class UserToUpdate(BaseModel):
-
+class NameCreateUpdate(BaseModel):
     firstname: str
     middlename: str
     lastname: str

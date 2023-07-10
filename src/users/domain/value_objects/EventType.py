@@ -15,7 +15,7 @@ class EventType:
         self._is_work = is_work
 
     def __check(self, in_shift: bool, is_work: bool) -> None:
-        if not self._in_shift and self.is_work:
+        if not in_shift and is_work:
             raise Exception('If in_shift is False, is_work must be False')
 
     @property

@@ -1,16 +1,18 @@
 import typing as t
 from itertools import pairwise
+from operator import attrgetter
 
 from src.common.domain import IntervalProtocol
 
 
-__all__ = [
-    'get_intersections',
-]
+__all__ = ['get_intersections']
 
 
-def get_intersections(events: t.Iterable[IntervalProtocol]) -> t.Collection[t.Tuple[IntervalProtocol, IntervalProtocol]]:
-    sorted_events: t.List[IntervalProtocol] = sorted(events, key=lambda x: x.starts_at)
+T = t.TypeVar('T', bound=IntervalProtocol)
+
+
+def get_intersections(events: t.Iterable[T]) -> t.List[t.Tuple[T, T]]:
+    sorted_events = sorted(events, key=attrgetter('starts_at'))
     return list(
         filter(
             lambda pair: pair[0].ends_at > pair[1].starts_at,

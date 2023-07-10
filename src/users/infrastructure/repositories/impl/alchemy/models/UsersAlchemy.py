@@ -14,4 +14,4 @@ class UsersAlchemy(Base):
     firstname = Column(String, nullable=False)
     middlename = Column(String, nullable=False)
     lastname = Column(String, nullable=False)
-    events = relationship('EventsAlchemy', backref='user')  #? cascade='all, delete-orphan'?
+    events = relationship('EventsAlchemy', backref='user', cascade='all, delete-orphan')

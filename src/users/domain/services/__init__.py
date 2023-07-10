@@ -1,1 +1,2 @@
-from .TrimEvents import *
+from .TrimUserEventsByInterval import *
+from .UpdateUserEventsByInterval import *

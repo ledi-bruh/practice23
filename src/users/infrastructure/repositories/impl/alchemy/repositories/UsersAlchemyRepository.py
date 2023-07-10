@@ -7,9 +7,7 @@ from ..mappers import user_db_to_domain, user_domain_to_db
 from ....core import UsersRepository, UserNotFoundException
 
 
-__all__ = [
-    'UsersAlchemyRepository',
-]
+__all__ = ['UsersAlchemyRepository']
 
 
 class UsersAlchemyRepository(UsersRepository):
@@ -20,8 +18,6 @@ class UsersAlchemyRepository(UsersRepository):
         self.__session = session
 
     def get_by_id(self, id: UUID) -> User:
-        """Получить пользователя по id"""
-
         db_user = (
             self.__session
             .query(UsersAlchemy)
@@ -35,13 +31,9 @@ class UsersAlchemyRepository(UsersRepository):
         return user_db_to_domain(db_user)
 
     def create(self, user: User) -> None:
-        """Создание пользователя"""
-
         self.__session.add(user_domain_to_db(user))
 
     def update(self, id: UUID, user: User) -> None:  #? Должен изменить юзера и в БД, и в Domain?
-        """Изменить пользователя"""
-
         db_user = user_domain_to_db(self.get_by_id(id))
 
         #? Как заменять user.name и подобные?
@@ -50,7 +42,5 @@ class UsersAlchemyRepository(UsersRepository):
             setattr(db_user, field, value)
 
     def delete_by_id(self, id: UUID) -> None:
-        """Удалить пользователя по id"""
-
         db_user = user_domain_to_db(self.get_by_id(id))
         self.__session.delete(db_user)

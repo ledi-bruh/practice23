@@ -1,11 +1,9 @@
 from uuid import UUID
 
-from ....domain import User
+from src.users.domain.entities import User
 
 
-__all__ = [
-    'UsersRepository',
-]
+__all__ = ['UsersRepository']
 
 
 class UsersRepository:

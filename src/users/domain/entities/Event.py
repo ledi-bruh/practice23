@@ -17,17 +17,21 @@ class Event:
     def id(self):
         return self._id
 
-    @id.setter
-    def id(self, value):
-        self.id = value
-
     @property
     def interval(self):
         return self._interval
 
+    @interval.setter
+    def interval(self, value):
+        self._interval = value
+
     @property
     def event_type(self):
         return self._event_type
+
+    @event_type.setter
+    def event_type(self, value):
+        self._event_type = value
 
     @property
     def starts_at(self):

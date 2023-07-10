@@ -1,16 +1,18 @@
 import typing as t
+from copy import deepcopy
 from uuid import UUID, uuid4
+from itertools import chain
 
 from .Event import Event
-from ..value_objects import Name
-from ..services import TrimEvents
+from ..value_objects import Name, EventType, Interval
 from ..functions import get_intersections
+from ..dto import EventToCreate, EventToUpdate
 
 
 __all__ = ['User']
 
 
-class User:  #! Root
+class User:
 
     def __init__(self, name: Name):
         self._id = uuid4()
@@ -27,12 +29,27 @@ class User:  #! Root
         return self._events
 
     def __check_events(events: t.Iterable[Event]) -> None:
-        intersections = get_intersections(events)
-        if len(intersections) > 0 or len(events) == 0:
-            raise Exception('Events intersect')
+        if len(events) == 0:
+            raise Exception('Nothing to check.')
 
-    def add_events(self, trim_events: TrimEvents, events: ...) -> None:  #! t.List[EventToCreate]
-        self.__check_events(events)
+        if len((intersections := get_intersections(events))) > 0:
+            raise Exception(f'Events intersect: {intersections}.')
+
+    def add_events(self, events_to_create: t.List[EventToCreate]) -> None:
+        events = list(map(
+            lambda x: Event(
+                event_type=EventType(
+                    in_shift=x.event_type.in_shift,
+                    is_work=x.event_type.is_work,
+                ),
+                interval=Interval(
+                    starts_at=x.interval.starts_at,
+                    ends_at=x.interval.ends_at,
+                ),
+            ),
+            events_to_create
+        ))
+        self.__check_events(chain(self._events, events))
         self._events += events
         self._events_map.update({event.id: event for event in events})
 
@@ -40,22 +57,24 @@ class User:  #! Root
         event = self._events_map.pop(event_id)
         self._events.remove(event)
 
-    def update_event(self, event_id: UUID, event_to_update: ...):
+    def update_event(self, event_id: UUID, event_to_update: EventToUpdate):
         event = self._events_map[event_id]
-        
-        new_event = Event(
-            event_type=event.event_type,
-            interval=event.interval,
-        )
-        new_event.id = event.id
 
-        for k, v in event_to_update:
-            setattr(new_event, k, v)
+        new_event = deepcopy(event)
+        new_event._event_type=EventType(
+            in_shift=event_to_update.event_type.in_shift,
+            is_work=event_to_update.event_type.is_work,
+        )
+        new_event._interval = Interval(
+            starts_at=event_to_update.interval.starts_at,
+            ends_at=event_to_update.interval.ends_at,
+        )
 
         new_events = self._events.copy()
         new_events.remove(event)
         new_events.append(new_event)
         self.__check_events(new_events)
 
-        for k, v in event_to_update:
-            setattr(event, k, v)
+        self._events.remove(event)
+        self._events.append(new_event)
+        self._events_map[event.id] = new_event
