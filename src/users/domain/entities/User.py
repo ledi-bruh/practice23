@@ -53,11 +53,11 @@ class User:
         self._events += events
         self._events_map.update({event.id: event for event in events})
 
-    def delete_event(self, event_id: UUID):
+    def delete_event(self, event_id: UUID) -> None:
         event = self._events_map.pop(event_id)
         self._events.remove(event)
 
-    def update_event(self, event_id: UUID, event_to_update: EventToUpdate):
+    def update_event(self, event_id: UUID, event_to_update: EventToUpdate) -> None:
         event = self._events_map[event_id]
 
         new_event = deepcopy(event)

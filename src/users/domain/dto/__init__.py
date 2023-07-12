@@ -1,3 +1,6 @@
+from .UserToCreate import *
+from .UserToUpdate import *
+
 from .EventToCreate import *
 from .EventToUpdate import *
 

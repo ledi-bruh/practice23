@@ -10,11 +10,11 @@ class UsersRepository:
 
     __slots__ = ()
 
-    def get_by_id(self, id: UUID) -> None:
+    def get_by_id(self, id: UUID) -> User:
         """Получить пользователя по id"""
         raise NotImplementedError()
 
-    def create(self, user: User) -> User:
+    def create(self, user: User) -> None:
         """Создание пользователя"""
         raise NotImplementedError()
 
