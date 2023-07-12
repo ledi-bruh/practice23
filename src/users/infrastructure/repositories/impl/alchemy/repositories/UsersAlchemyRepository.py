@@ -1,9 +1,10 @@
 from uuid import UUID
+from functools import partial
 from sqlalchemy.orm import Session
 
 from src.users.domain import User
 from ..models import UsersAlchemy
-from ..mappers import user_db_to_domain, user_domain_to_db
+from ..mappers import user_db_to_domain, user_domain_to_db, event_domain_to_db
 from ....core import UsersRepository, UserNotFoundException
 
 
@@ -33,13 +34,14 @@ class UsersAlchemyRepository(UsersRepository):
     def create(self, user: User) -> None:
         self.__session.add(user_domain_to_db(user))
 
-    def update(self, id: UUID, user: User) -> None:  #? Должен изменить юзера и в БД, и в Domain?
+    def update(self, id: UUID, user_to_update: User) -> None:  #! Нужен ли тогда id, если он есть в User?
         db_user = user_domain_to_db(self.get_by_id(id))
 
-        #? Как заменять user.name и подобные?
-        #? user_domain_to_db(user), не появятся какие-то ненужные поля?
-        for field, value in user_domain_to_db(user).__dict__.items():
-            setattr(db_user, field, value)
+        db_user.firstname = user_to_update.name.firstname
+        db_user.middlename = user_to_update.name.middlename
+        db_user.lastname = user_to_update.name.lastname
+
+        db_user.events[:] = list(map(partial(event_domain_to_db, user_id=db_user.id), user_to_update.events))
 
     def delete_by_id(self, id: UUID) -> None:
         db_user = user_domain_to_db(self.get_by_id(id))

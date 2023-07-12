@@ -5,8 +5,8 @@ from ..models import EventsAlchemy
 
 
 __all__ = [
-    'user_domain_to_db',
-    'user_db_to_domain',
+    'event_domain_to_db',
+    'event_db_to_domain',
 ]
 
 

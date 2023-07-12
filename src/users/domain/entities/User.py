@@ -21,6 +21,10 @@ class User:
         self._events_map: t.MutableMapping[UUID, Event] = {}
 
     @property
+    def id(self):
+        return self._id
+
+    @property
     def name(self):
         return self._name
 
