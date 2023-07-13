@@ -26,3 +26,9 @@ class UnitOfWork:
 
     def rollback(self) -> None:
         self.__connection.rollback()
+
+    def initialize(self) -> None:
+        self.__connection.initialize()
+
+    def deinitialize(self) -> None:
+        self.__connection.deinitialize()

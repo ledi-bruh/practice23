@@ -8,7 +8,7 @@ from src.users.domain import (
     Name,
     UpdateUserEventsByInterval,
 )
-from .UnitOfWork import UnitOfWork
+from ..UnitOfWork import UnitOfWork
 
 
 __all__ = ['UsersService']

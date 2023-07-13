@@ -16,12 +16,12 @@ application = Application(config=config, app=app)
 
 @app.on_event('startup')
 async def startup():
-    await application.start()
+    await application.initialize()
 
 
 @app.on_event('shutdown')
 async def shutdown():
-    await application.stop()
+    await application.deinitialize()
 
 
 if __name__ == '__main__':
