@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 
 from .config import Config
-from ..users.application import UsersService
 from ..users.presentation import UsersView
+from ..users.application import UsersService, UnitOfWork
+from ..users.domain import UpdateUserEventsByInterval, TrimUserEventsByInterval
 from ..users.infrastructure.repositories import (
     UsersRepositoryFactoryStore,
-    UsersMemoryRepositoryFactory, UsersAlchemyRepositoryFactory
+    UsersMemoryRepositoryFactory, UsersAlchemyRepositoryFactory,
+    AlchemyConnection, UsersAlchemyRepository
 )
 
 
@@ -14,13 +16,29 @@ __all__ = ['Application']
 
 class Application:
 
-    __slots__ = ('__config', '__app', )
+    __slots__ = (
+        '__config',
+        '__app',
+    )
 
     def __init__(self, config: Config, app: FastAPI) -> None:
         self.__config = config
         self.__app = app
 
     async def start(self) -> None:
+        # connection = AlchemyConnection(self.__config.repository)
+        # users_repository = UsersAlchemyRepository(connection.__session)  #! _session?
+        # unit_of_work = UnitOfWork(connection, users_repository)
+
+        # trim_user_events_by_interval = TrimUserEventsByInterval()
+        # update_user_events_by_interval = UpdateUserEventsByInterval(trim_user_events_by_interval)
+        # users_service = UsersService(unit_of_work, update_user_events_by_interval)
+        # users_view = UsersView(users_service)
+        
+        # connection.initialize()
+
+
+
         users_repository_fabric_store = UsersRepositoryFactoryStore()
         users_repository_fabric_store.register_factory('memory', UsersMemoryRepositoryFactory())
         users_repository_fabric_store.register_factory('alchemy', UsersAlchemyRepositoryFactory())

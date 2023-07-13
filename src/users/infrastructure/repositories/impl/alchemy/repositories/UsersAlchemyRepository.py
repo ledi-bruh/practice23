@@ -34,7 +34,7 @@ class UsersAlchemyRepository(UsersRepository):
     def create(self, user: User) -> None:
         self.__session.add(user_domain_to_db(user))
 
-    def update(self, id: UUID, user_to_update: User) -> None:  #! Нужен ли тогда id, если он есть в User?
+    def update(self, id: UUID, user_to_update: User) -> None:
         db_user = user_domain_to_db(self.get_by_id(id))
 
         db_user.firstname = user_to_update.name.firstname
