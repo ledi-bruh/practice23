@@ -1,8 +1,7 @@
 import typing as t
 
 from src.users.infrastructure.repositories import AlchemyConnection, UsersAlchemyRepository
-from ...core.UoWFactory import UoWFactory
-from ..UnitOfWork import UnitOfWork
+from ...core import UoWFactory, UnitOfWork
 
 
 __all__ = ['AlchemyUoWFactory']
@@ -14,5 +13,5 @@ class AlchemyUoWFactory(UoWFactory):
 
     def __call__(self, repository_config: t.Mapping[str, t.Any]) -> UnitOfWork:
         connection = AlchemyConnection(repository_config)
-        users_repository = UsersAlchemyRepository(connection._session)
+        users_repository = UsersAlchemyRepository(connection)
         return UnitOfWork(connection, users_repository)

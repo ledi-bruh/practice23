@@ -1,7 +1,6 @@
 import typing as t
 
-from ..core.UoWFactory import UoWFactory
-from .UnitOfWork import UnitOfWork
+from ..core import UoWFactory, UnitOfWork
 
 
 __all__ = ['UoWFactoryStore']

@@ -13,15 +13,19 @@ class AlchemyConnection(Connection):
 
     __slots__ = (
         '__config',
-        '_session',
+        '__session',
     )
 
     def __init__(self, repository_config: t.Mapping[str, t.Any]) -> None:
         self.__config = repository_config
-        self._session = None
+        self.__session = None
+
+    @property
+    def session(self):
+        return self.__session
 
     def initialize(self):
-        if self._session is not None:
+        if self.__session is not None:
             return
 
         connection_string = URL.create(
@@ -41,14 +45,14 @@ class AlchemyConnection(Connection):
             autoflush=False,
         )
 
-        self._session = Session()
+        self.__session = Session()
 
     def deinitialize(self):
-        if self._session is not None:
-            self._session.close()
+        if self.__session is not None:
+            self.__session.close()
 
     def commit(self) -> None:
-        self._session.commit()
+        self.__session.commit()
 
     def rollback(self) -> None:
-        self._session.rollback()
+        self.__session.rollback()

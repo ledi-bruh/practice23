@@ -1,10 +1,10 @@
 from uuid import UUID
 from functools import partial
-from sqlalchemy.orm import Session
 
 from src.users.domain import User
 from ..models import UsersAlchemy
 from ..mappers import user_db_to_domain, user_domain_to_db, event_domain_to_db
+from ..AlchemyConnection import AlchemyConnection
 from ....core import UsersRepository, UserNotFoundException
 
 
@@ -13,10 +13,16 @@ __all__ = ['UsersAlchemyRepository']
 
 class UsersAlchemyRepository(UsersRepository):
 
-    __slots__ = ('__session', )
+    __slots__ = (
+        '__connection',
+    )
 
-    def __init__(self, session: Session) -> None:
-        self.__session = session
+    def __init__(self, connection: AlchemyConnection) -> None:
+        self.__connection = connection
+
+    @property
+    def __session(self):
+        return self.__connection.session
 
     def get_by_id(self, id: UUID) -> User:
         db_user = (

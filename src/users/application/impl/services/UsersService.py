@@ -8,7 +8,7 @@ from src.users.domain import (
     Name,
     UpdateUserEventsByInterval,
 )
-from ..UnitOfWork import UnitOfWork
+from ...core import UnitOfWork
 
 
 __all__ = ['UsersService']
@@ -30,11 +30,16 @@ class UsersService:
         self.__update_user_events_by_interval = update_user_events_by_interval
 
     async def get_by_id(self, user_id: UUID) -> User:
+        a = self.__unit_of_work.users_repository.get_by_id(user_id)
+        print('!!!', a.__dict__)
+        return a
         return self.__unit_of_work.users_repository.get_by_id(user_id)
 
     async def create(self, user_to_create: UserToCreate) -> None:
         with self.__unit_of_work as uow:
-            uow.users_repository.create(User(**dict(user_to_create)))
+            uow.users_repository.create(User(
+                name=Name(**dict(user_to_create.name))
+            ))
 
             uow.commit()
 

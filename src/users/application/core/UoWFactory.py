@@ -1,6 +1,6 @@
 import typing as t
 
-from ..impl.UnitOfWork import UnitOfWork
+from ..core import UnitOfWork
 
 
 __all__ = ['UoWFactory']
