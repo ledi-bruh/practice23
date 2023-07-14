@@ -35,13 +35,21 @@ class UsersAlchemyRepository(UsersRepository):
         self.__session.add(user_domain_to_db(user))
 
     def update(self, id: UUID, user_to_update: User) -> None:
-        db_user = user_domain_to_db(self.get_by_id(id))
+        user = self.get_by_id(id)
+        db_user = user_domain_to_db(user)
 
         db_user.firstname = user_to_update.name.firstname
         db_user.middlename = user_to_update.name.middlename
         db_user.lastname = user_to_update.name.lastname
 
-        db_user.events[:] = list(map(partial(event_domain_to_db, user_id=db_user.id), user_to_update.events))
+        intersections = set(user.events) & set(user_to_update.events)
+        events_to_delete = set(user.events) - intersections
+        events_to_add = set(user_to_update.events) - intersections
+
+        convert = partial(event_domain_to_db, user_id=id)
+
+        new_events = set(db_user.events) - set(map(convert, events_to_delete)) + set(map(convert, events_to_add))
+        db_user.events[:] = list(new_events)
 
     def delete_by_id(self, id: UUID) -> None:
         db_user = user_domain_to_db(self.get_by_id(id))

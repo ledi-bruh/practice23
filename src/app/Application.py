@@ -14,28 +14,28 @@ class Application:
     __slots__ = (
         '__config',
         '__app',
+        '__unit_of_work',
     )
 
     def __init__(self, config: Config, app: FastAPI) -> None:
         self.__config = config
         self.__app = app
+        self.__bootstrap()
 
-    async def initialize(self) -> None:
+    def __bootstrap(self):
         uow_factory_store = UoWFactoryStore()
         uow_factory_store.register('memory', MemoryUoWFactory())
         uow_factory_store.register('alchemy', AlchemyUoWFactory())
 
-        unit_of_work = uow_factory_store.get_instance(
+        self.__unit_of_work = uow_factory_store.get_instance(
             self.__config.repository.get('type'),
             self.__config.repository,
         )
 
-        unit_of_work.initialize()
-
         trim_user_events_by_interval = TrimUserEventsByInterval()
         update_user_events_by_interval = UpdateUserEventsByInterval(trim_user_events_by_interval)
 
-        users_service = UsersService(unit_of_work, update_user_events_by_interval)
+        users_service = UsersService(self.__unit_of_work, update_user_events_by_interval)
 
         users_view = UsersView(users_service)
 
@@ -64,5 +64,8 @@ class Application:
             tags=['Удалить пользователя'],
         )
 
+    async def initialize(self) -> None:
+        self.__unit_of_work.initialize()
+
     async def deinitialize(self):
-        pass
+        self.__unit_of_work.deinitialize()
