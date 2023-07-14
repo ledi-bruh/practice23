@@ -30,9 +30,6 @@ class UsersService:
         self.__update_user_events_by_interval = update_user_events_by_interval
 
     async def get_by_id(self, user_id: UUID) -> User:
-        a = self.__unit_of_work.users_repository.get_by_id(user_id)
-        print('!!!', a.__dict__)
-        return a
         return self.__unit_of_work.users_repository.get_by_id(user_id)
 
     async def create(self, user_to_create: UserToCreate) -> None:

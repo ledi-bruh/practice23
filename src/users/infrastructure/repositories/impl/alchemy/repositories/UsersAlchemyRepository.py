@@ -2,9 +2,10 @@ from uuid import UUID
 from functools import partial
 
 from src.users.domain import User
+from src.users.presentation.models import UserUI
 from ..models import UsersAlchemy
-from ..mappers import user_db_to_domain, user_domain_to_db, event_domain_to_db
 from ..AlchemyConnection import AlchemyConnection
+from ..mappers import user_db_to_domain, user_domain_to_db, event_domain_to_db
 from ....core import UsersRepository, UserNotFoundException
 
 
@@ -41,6 +42,9 @@ class UsersAlchemyRepository(UsersRepository):
         self.__session.add(user_domain_to_db(user))
 
     def update(self, id: UUID, user_to_update: User) -> None:
+        #! Если для удобства использовать self.get_by_id(id), то там возвращается не db а domain model 
+        #! => при конверте обратно в db это уже другая модель
+        #? повторять get тут?
         user = self.get_by_id(id)
         db_user = user_domain_to_db(user)
 
@@ -54,9 +58,9 @@ class UsersAlchemyRepository(UsersRepository):
 
         convert = partial(event_domain_to_db, user_id=id)
 
-        new_events = set(db_user.events) - set(map(convert, events_to_delete)) + set(map(convert, events_to_add))
+        new_events = set(db_user.events) - set(map(convert, events_to_delete)) | set(map(convert, events_to_add))
         db_user.events[:] = list(new_events)
 
     def delete_by_id(self, id: UUID) -> None:
-        db_user = user_domain_to_db(self.get_by_id(id))
-        self.__session.delete(db_user)
+        #! как и выше, повторять get либо get должен вернуть db model
+        self.__session.query(UsersAlchemy).filter_by(id=id).delete()

@@ -2,5 +2,7 @@ uvicorn
 fastapi
 fastapi_utils
 sqlalchemy
+psycopg2
 python-multipart
 pyyaml
+alembic

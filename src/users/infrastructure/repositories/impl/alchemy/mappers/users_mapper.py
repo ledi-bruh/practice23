@@ -1,4 +1,6 @@
+from src.users.presentation.models import UserUI
 from src.users.domain import User, Name
+from .event_mapper import event_db_to_domain, event_db_to_ui
 from ..models import UsersAlchemy
 
 
@@ -25,5 +27,16 @@ def user_db_to_domain(db_user: UsersAlchemy) -> User:
         middlename=db_user.middlename,
         lastname=db_user.lastname,
     )
+    user._events = list(map(event_db_to_domain, db_user.events))
     user._events_map = {e._id: e for e in user._events}
     return user
+
+
+def user_db_to_ui(db_user: UsersAlchemy) -> UserUI:  #! unused
+    return UserUI(
+        id=db_user.id,
+        firstname=db_user.firstname,
+        middlename=db_user.middlename,
+        lastname=db_user.lastname,
+        events=list(map(event_db_to_ui, db_user.events)),
+    )

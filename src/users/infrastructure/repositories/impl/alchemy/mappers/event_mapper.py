@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from src.users.presentation.models import EventUI, EventTypeUI
 from src.users.domain import Event, EventType, Interval
 from ..models import EventsAlchemy
 
@@ -33,3 +34,15 @@ def event_db_to_domain(db_event: EventsAlchemy) -> Event:
         ends_at=db_event.ends_at,
     )
     return event
+
+
+def event_db_to_ui(db_event: EventsAlchemy) -> EventUI:  #! unused
+    return EventUI(
+        id=db_event.id,
+        type=EventTypeUI(
+            in_shift=db_event.in_shift,
+            is_work=db_event.is_work,
+        ),
+        starts_at=db_event.starts_at,
+        ends_at=db_event.ends_at,
+    )

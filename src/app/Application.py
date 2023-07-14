@@ -41,24 +41,28 @@ class Application:
 
         self.__app.add_api_route(
             '/users/{user_guid}',
+            response_model=users_view.get_by_id.__annotations__['return'],
             endpoint=users_view.get_by_id,
             methods=['GET'],
             tags=['Получить пользователя'],
         )
         self.__app.add_api_route(
             '/users',
+            response_model=users_view.add.__annotations__['return'],
             endpoint=users_view.add,
             methods=['POST'],
             tags=['Создать пользователя'],
         )
         self.__app.add_api_route(
             '/users/{user_guid}',
+            response_model=users_view.update.__annotations__['return'],
             endpoint=users_view.update,
-            methods=['PUT'],
+            methods=['POST'],
             tags=['Изменить пользователя'],
         )
         self.__app.add_api_route(
             '/users/{user_guid}',
+            response_model=users_view.delete_by_id.__annotations__['return'],
             endpoint=users_view.delete_by_id,
             methods=['DELETE'],
             tags=['Удалить пользователя'],
