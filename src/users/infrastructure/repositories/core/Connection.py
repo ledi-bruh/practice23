@@ -6,13 +6,13 @@ class Connection:
 
     __slots__ = ()
 
-    def initialize(self) -> None:
+    async def initialize(self) -> None:
         raise NotImplementedError
 
-    def deinitialize(self) -> None:
+    async def deinitialize(self) -> None:
         raise NotImplementedError
 
-    def commit(self) -> None:
+    async def commit(self) -> None:
         raise NotImplementedError
 
     def rollback(self) -> None:

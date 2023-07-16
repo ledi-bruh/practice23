@@ -20,9 +20,8 @@ class Application:
     def __init__(self, config: Config, app: FastAPI) -> None:
         self.__config = config
         self.__app = app
-        self.__bootstrap()
 
-    def __bootstrap(self):
+    async def __bootstrap(self):
         uow_factory_store = UoWFactoryStore()
         uow_factory_store.register('memory', MemoryUoWFactory())
         uow_factory_store.register('alchemy', AlchemyUoWFactory())
@@ -41,6 +40,7 @@ class Application:
 
         self.__app.add_api_route(
             '/users/{user_guid}',
+            status_code=200,
             response_model=users_view.get_by_id.__annotations__['return'],
             endpoint=users_view.get_by_id,
             methods=['GET'],
@@ -48,6 +48,7 @@ class Application:
         )
         self.__app.add_api_route(
             '/users',
+            status_code=201,
             response_model=users_view.add.__annotations__['return'],
             endpoint=users_view.add,
             methods=['POST'],
@@ -55,6 +56,7 @@ class Application:
         )
         self.__app.add_api_route(
             '/users/{user_guid}',
+            status_code=200,
             response_model=users_view.update.__annotations__['return'],
             endpoint=users_view.update,
             methods=['POST'],
@@ -62,6 +64,7 @@ class Application:
         )
         self.__app.add_api_route(
             '/users/{user_guid}',
+            status_code=204,
             response_model=users_view.delete_by_id.__annotations__['return'],
             endpoint=users_view.delete_by_id,
             methods=['DELETE'],
@@ -69,7 +72,8 @@ class Application:
         )
 
     async def initialize(self) -> None:
-        self.__unit_of_work.initialize()
+        await self.__bootstrap()
+        await self.__unit_of_work.initialize()
 
     async def deinitialize(self):
-        self.__unit_of_work.deinitialize()
+        await self.__unit_of_work.deinitialize()

@@ -18,14 +18,11 @@ class UsersView:
         user = await self.__users_service.get_by_id(user_id)
         return user_domain_to_ui(user)
 
-    async def add(self, dto: UserToCreate) -> int:
-        await self.__users_service.create(dto)
-        return 201  #! StatusCode(201) class or in endpoint status_code=201 ?
+    async def add(self, dto: UserToCreate) -> None:
+        return await self.__users_service.create(dto)
 
-    async def update(self, user_guid: UUID4, dto: UserToUpdate) -> int:
-        await self.__users_service.update(user_guid, dto)
-        return 200
+    async def update(self, user_guid: UUID4, dto: UserToUpdate) -> None:
+        return await self.__users_service.update(user_guid, dto)
 
-    async def delete_by_id(self, user_id: UUID4) -> int:
-        await self.__users_service.delete_by_id(user_id)
-        return 204
+    async def delete_by_id(self, user_id: UUID4) -> None:
+        return await self.__users_service.delete_by_id(user_id)

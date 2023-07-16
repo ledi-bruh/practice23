@@ -10,18 +10,18 @@ class UsersRepository:
 
     __slots__ = ()
 
-    def get_by_id(self, id: UUID) -> User:
+    async def get_by_id(self, id: UUID) -> User:
         """Получить пользователя по id"""
         raise NotImplementedError()
 
-    def create(self, user: User) -> None:
+    async def create(self, user: User) -> None:
         """Создание пользователя"""
         raise NotImplementedError()
 
-    def update(self, id: UUID, user: User) -> None:
+    async def update(self, id: UUID, user: User) -> None:
         """Изменить пользователя"""
         raise NotImplementedError()
 
-    def delete_by_id(self, id: UUID) -> None:
+    async def delete_by_id(self, id: UUID) -> None:
         """Удалить пользователя по id"""
         raise NotImplementedError()

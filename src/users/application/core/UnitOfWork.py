@@ -21,14 +21,14 @@ class UnitOfWork:
     def __exit__(self, *args) -> None:
         self.rollback()
 
-    def commit(self) -> None:
-        self.__connection.commit()
+    async def commit(self) -> None:
+        await self.__connection.commit()
 
     def rollback(self) -> None:
         self.__connection.rollback()
 
-    def initialize(self) -> None:
-        self.__connection.initialize()
+    async def initialize(self) -> None:
+        await self.__connection.initialize()
 
-    def deinitialize(self) -> None:
-        self.__connection.deinitialize()
+    async def deinitialize(self) -> None:
+        await self.__connection.deinitialize()

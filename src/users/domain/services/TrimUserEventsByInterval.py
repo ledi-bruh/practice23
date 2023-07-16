@@ -8,7 +8,7 @@ __all__ = ['TrimUserEventsByInterval']
 
 class TrimUserEventsByInterval:
 
-    def __call__(self, user: User, interval: IntervalProtocol) -> None:
+    async def __call__(self, user: User, interval: IntervalProtocol) -> None:
         for event in user.events:
             if event.starts_at > interval.starts_at and event.ends_at < interval.ends_at:
                 user.delete_event(event.id)

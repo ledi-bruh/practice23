@@ -24,7 +24,7 @@ class AlchemyConnection(Connection):
     def session(self):
         return self.__session
 
-    def initialize(self):
+    async def initialize(self):
         if self.__session is not None:
             return
 
@@ -47,11 +47,11 @@ class AlchemyConnection(Connection):
 
         self.__session = Session()
 
-    def deinitialize(self):
+    async def deinitialize(self):
         if self.__session is not None:
             self.__session.close()
 
-    def commit(self) -> None:
+    async def commit(self) -> None:
         self.__session.commit()
 
     def rollback(self) -> None:
