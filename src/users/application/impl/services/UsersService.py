@@ -62,7 +62,7 @@ class UsersService:
     async def add_events(self, user_id: UUID, events_to_create: t.List[EventToCreate]) -> None:
         with self.__unit_of_work as uow:
             user = await self.get_by_id(user_id)
-            await user.add_events(events_to_create)
+            user.add_events(events_to_create)
             await uow.users_repository.update(user.id, user)
 
             await uow.commit()
@@ -92,5 +92,6 @@ class UsersService:
         with self.__unit_of_work as uow:
             user = await self.get_by_id(user_id)
             await self.__update_user_events_by_interval(user, Interval(**dict(interval)), events_to_create)
+            await uow.users_repository.update(user.id, user)
 
             await uow.commit()

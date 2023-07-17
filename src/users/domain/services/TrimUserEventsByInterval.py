@@ -10,10 +10,10 @@ class TrimUserEventsByInterval:
 
     async def __call__(self, user: User, interval: IntervalProtocol) -> None:
         for event in user.events:
-            if event.starts_at > interval.starts_at and event.ends_at < interval.ends_at:
+            if event.starts_at >= interval.starts_at and event.ends_at <= interval.ends_at:
                 user.delete_event(event.id)
 
-            elif interval.starts_at < event.starts_at < interval.ends_at:
+            elif interval.starts_at <= event.starts_at < interval.ends_at:
                 if event.event_type.in_shift:
                     user.delete_event(event.id)
                 else:
@@ -28,7 +28,7 @@ class TrimUserEventsByInterval:
                         ),
                     ))
 
-            elif interval.starts_at < event.ends_at < interval.ends_at:
+            elif interval.starts_at < event.ends_at <= interval.ends_at:
                 if event.event_type.in_shift:
                     user.delete_event(event.id)
                 else:

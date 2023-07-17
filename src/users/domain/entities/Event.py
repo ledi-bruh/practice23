@@ -13,6 +13,9 @@ class Event:
         self._event_type = event_type
         self._interval = interval
 
+    def __repr__(self):
+        return f'{self._id}:  {self._interval._starts_at}––{self._interval._ends_at}'
+
     @property
     def id(self):
         return self._id

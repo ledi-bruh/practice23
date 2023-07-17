@@ -32,7 +32,7 @@ class User:
     def events(self):
         return self._events
 
-    def __check_events(events: t.Iterable[Event]) -> None:
+    def __check_events(self, events: t.Iterable[Event]) -> None:
         if len(events) == 0:
             raise Exception('Nothing to check.')
 
@@ -53,7 +53,7 @@ class User:
             ),
             events_to_create
         ))
-        self.__check_events(chain(self._events, events))
+        self.__check_events(tuple(chain(self._events, events)))
         self._events += events
         self._events_map.update({event.id: event for event in events})
 
@@ -75,10 +75,8 @@ class User:
         )
 
         new_events = self._events.copy()
-        new_events.remove(event)
-        new_events.append(new_event)
+        new_events[new_events.index(event)] = new_event
         self.__check_events(new_events)
 
-        self._events.remove(event)
-        self._events.append(new_event)
+        self._events[self._events.index(event)] = new_event
         self._events_map[event.id] = new_event

@@ -39,7 +39,7 @@ class Application:
         users_view = UsersView(users_service)
 
         self.__app.add_api_route(
-            '/users/{user_guid}',
+            '/user/{user_id}',
             status_code=200,
             response_model=users_view.get_by_id.__annotations__['return'],
             endpoint=users_view.get_by_id,
@@ -47,7 +47,7 @@ class Application:
             tags=['Получить пользователя'],
         )
         self.__app.add_api_route(
-            '/users',
+            '/user',
             status_code=201,
             response_model=users_view.add.__annotations__['return'],
             endpoint=users_view.add,
@@ -55,7 +55,7 @@ class Application:
             tags=['Создать пользователя'],
         )
         self.__app.add_api_route(
-            '/users/{user_guid}',
+            '/user/{user_id}',
             status_code=200,
             response_model=users_view.update.__annotations__['return'],
             endpoint=users_view.update,
@@ -63,12 +63,52 @@ class Application:
             tags=['Изменить пользователя'],
         )
         self.__app.add_api_route(
-            '/users/{user_guid}',
+            '/user/{user_id}',
             status_code=204,
             response_model=users_view.delete_by_id.__annotations__['return'],
             endpoint=users_view.delete_by_id,
             methods=['DELETE'],
             tags=['Удалить пользователя'],
+        )
+        self.__app.add_api_route(
+            '/user/{user_id}/event/',
+            status_code=200,
+            response_model=users_view.get_user_events.__annotations__['return'],
+            endpoint=users_view.get_user_events,
+            methods=['GET'],
+            tags=['Получить ивенты пользователя'],
+        )
+        self.__app.add_api_route(
+            '/user/{user_id}/events',
+            status_code=201,
+            response_model=users_view.add_events.__annotations__['return'],
+            endpoint=users_view.add_events,
+            methods=['POST'],
+            tags=['Создать ивенты пользователя'],
+        )
+        self.__app.add_api_route(
+            '/user/{user_id}/event/{event_id}',
+            status_code=200,
+            response_model=users_view.update_event.__annotations__['return'],
+            endpoint=users_view.update_event,
+            methods=['POST'],
+            tags=['Изменить ивент пользователя'],
+        )
+        self.__app.add_api_route(
+            '/user/{user_id}/event/{event_id}',
+            status_code=204,
+            response_model=users_view.delete_event.__annotations__['return'],
+            endpoint=users_view.delete_event,
+            methods=['DELETE'],
+            tags=['Удалить ивент пользователя'],
+        )
+        self.__app.add_api_route(
+            '/user/{user_id}/events/interval',
+            status_code=200,
+            response_model=users_view.update_user_events_by_interval.__annotations__['return'],
+            endpoint=users_view.update_user_events_by_interval,
+            methods=['POST'],
+            tags=['Изменить ивенты пользователя в интервале'],
         )
 
     async def initialize(self) -> None:
