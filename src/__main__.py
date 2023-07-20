@@ -7,7 +7,7 @@ from .app import Application, Config, read_config
 app = FastAPI(
     title='Summer Practice 2023',
     description='',
-    version='0.9',
+    version='0.10',
 )
 
 config = Config(**read_config('config.yml'))

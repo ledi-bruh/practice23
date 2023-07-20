@@ -4,7 +4,7 @@ from functools import partial
 from src.users.domain import User
 from ..models import UsersAlchemy
 from ..AlchemyConnection import AlchemyConnection
-from ..mappers import user_db_to_domain, user_domain_to_db, event_domain_to_db
+from ..mappers import user_db_to_domain, user_domain_to_db, event_domain_to_db, shift_domain_to_db
 from ....core import UsersRepository, UserNotFoundException
 
 
@@ -49,14 +49,26 @@ class UsersAlchemyRepository(UsersRepository):
         db_user.middlename = user_to_update.name.middlename
         db_user.lastname = user_to_update.name.lastname
 
-        convert = partial(event_domain_to_db, user_id=id)
-        db_user.events[:] = list(map(convert, user_to_update.events))
-
+        # convert = partial(event_domain_to_db, user_id=id)
+        # db_user.events[:] = list(map(partial(event_domain_to_db, user_id=id), user_to_update.events))
         # intersections = set(user.events) & set(user_to_update.events)
         # events_to_delete = set(user.events) - intersections
         # events_to_add = set(user_to_update.events) - intersections
         # new_events = set(db_user.events) - set(map(convert, events_to_delete)) | set(map(convert, events_to_add))
         # db_user.events[:] = list(new_events)
+
+        events_to_add = []
+        events = set(user_to_update.events)
+
+        for shift in user_to_update.shifts:
+            shift_events = set(shift.events)
+            events_to_add += list(map(partial(event_domain_to_db, user_id=id, shift_id=shift.id), shift_events))
+            events -= shift_events
+
+        events_to_add += list(map(partial(event_domain_to_db, user_id=id, shift_id=None), events))
+        db_user.events[:] = events_to_add
+
+        db_user.shifts[:] = list(map(partial(shift_domain_to_db, user_id=id), user_to_update.shifts))
 
     async def delete_by_id(self, id: UUID) -> None:
         #! как и выше, повторять get либо get должен вернуть db model

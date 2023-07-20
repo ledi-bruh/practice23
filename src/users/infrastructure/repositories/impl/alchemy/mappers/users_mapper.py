@@ -1,6 +1,7 @@
 from src.users.presentation.models import UserUI
 from src.users.domain import User, Name
 from .event_mapper import event_db_to_domain, event_db_to_ui
+from .shift_mapper import shift_db_to_domain
 from ..models import UsersAlchemy
 
 
@@ -29,6 +30,7 @@ def user_db_to_domain(db_user: UsersAlchemy) -> User:
     )
     user._events = list(map(event_db_to_domain, db_user.events))
     user._events_map = {e._id: e for e in user._events}
+    user._shifts = list(map(shift_db_to_domain, db_user.shifts))
     return user
 
 

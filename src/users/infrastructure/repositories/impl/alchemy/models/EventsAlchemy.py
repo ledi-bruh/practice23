@@ -10,7 +10,8 @@ __all__ = ['EventsAlchemy']
 class EventsAlchemy(Base):
     __tablename__ = 'events'
     id = Column(GUID, primary_key=True)
-    user_id = Column(GUID, ForeignKey('users.id', name='fk_events__user_id', ondelete='CASCADE', onupdate='CASCADE'))
+    user_id = Column(GUID, ForeignKey('users.id', name='fk_events__user_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
+    shift_id = Column(GUID, ForeignKey('shifts.id', name='fk_events__shift_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     in_shift = Column(Boolean, nullable=False)
     is_work = Column(Boolean, nullable=False)
     starts_at = Column(DateTime(timezone=True), nullable=False)

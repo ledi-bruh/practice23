@@ -15,3 +15,4 @@ class UsersAlchemy(Base):
     middlename = Column(String, nullable=False)
     lastname = Column(String, nullable=False)
     events = relationship('EventsAlchemy', cascade='all, delete-orphan')
+    shifts = relationship('ShiftsAlchemy', cascade='all, delete-orphan')

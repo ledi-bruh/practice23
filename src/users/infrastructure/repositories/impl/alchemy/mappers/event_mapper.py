@@ -11,10 +11,11 @@ __all__ = [
 ]
 
 
-def event_domain_to_db(event: Event, user_id: UUID) -> EventsAlchemy:
+def event_domain_to_db(event: Event, user_id: UUID, shift_id: UUID) -> EventsAlchemy:
     return EventsAlchemy(
         id=event._id,
         user_id=user_id,
+        shift_id=shift_id,
         in_shift=event._event_type._in_shift,
         is_work=event._event_type._is_work,
         starts_at=event._interval._starts_at,

@@ -4,7 +4,7 @@ from sqlalchemy.engine import URL
 
 from src.app import Config, read_config
 from src.common.infrastructure import Base
-from src.users.infrastructure import UsersAlchemy, EventsAlchemy
+from src.users.infrastructure import UsersAlchemy, EventsAlchemy, ShiftsAlchemy
 
 
 config = Config(**read_config('config.yml'))
