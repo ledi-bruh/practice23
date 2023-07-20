@@ -1,1 +1,1 @@
-from .UsersView import *
+from .views import *

@@ -1,13 +1,8 @@
 import typing as t
 from uuid import UUID
 
-from src.users.domain import (
-    User, UserToCreate, UserToUpdate,
-    Event, EventToCreate, EventToUpdate,
-    Interval, IntervalCreateUpdate,
-    Name,
-    UpdateUserEventsByInterval,
-)
+from src.users.domain import User, Event, Interval, Name, UpdateUserEventsByInterval
+from src.users.domain.dto import UserToCreate, UserToUpdate, EventToCreate, EventToUpdate, IntervalCreateUpdate
 from ...core import UnitOfWork
 
 

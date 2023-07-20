@@ -3,7 +3,7 @@ from pydantic import UUID4
 from src.users.application.impl import UsersService
 from src.users.domain.dto import UserToCreate, UserToUpdate, EventToCreate, EventToUpdate, IntervalCreateUpdate
 from src.users.domain.mappers import user_domain_to_ui, event_domain_to_ui
-from .models import UserUI, EventUI
+from ..models import UserUI, EventUI
 
 __all__ = ['UsersView']
 
