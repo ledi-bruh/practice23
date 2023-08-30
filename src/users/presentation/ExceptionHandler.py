@@ -14,7 +14,7 @@ class ExceptionHandler:
         return HTTPException(status_code=500, detail='No result found')
 
     async def initialize(self) -> None:
-        self.__app.add_exception_handler(Exception, self.__no_result_found)
+        self.__app.add_exception_handler(NoResultFound, self.__no_result_found)
 
     async def deinitialize(self):
         pass

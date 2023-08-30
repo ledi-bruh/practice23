@@ -50,11 +50,11 @@ class UsersService:
 
             await uow.commit()
 
-    async def get_user_events(self, user_id: UUID) -> t.List[Event]:
+    async def get_user_events(self, user_id: UUID) -> t.Sequence[Event]:
         user = await self.get_by_id(user_id)
         return user.events
 
-    async def add_events(self, user_id: UUID, events_to_create: t.List[EventToCreate]) -> None:
+    async def add_events(self, user_id: UUID, events_to_create: t.Iterable[EventToCreate]) -> None:
         with self.__unit_of_work as uow:
             user = await self.get_by_id(user_id)
             user.add_events(events_to_create)

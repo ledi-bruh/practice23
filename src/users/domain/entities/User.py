@@ -32,8 +32,8 @@ class User:
         return self._name
 
     @property
-    def events(self):
-        return self._events
+    def events(self) -> t.Sequence[Event]:
+        return deepcopy(self._events)
 
     @property
     def shifts(self):
@@ -46,7 +46,7 @@ class User:
         if len((intersections := get_intersections(events))) > 0:
             raise Exception(f'Events intersect: {intersections}.')
 
-    def make_shifts(self, events: t.Sequence[Event]) -> t.List[Shift]:
+    def __make_shifts(self, events: t.Sequence[Event]) -> t.List[Shift]:
         shifts = []
 
         for events_to_shift in split_events_into_shifts(events):
@@ -61,16 +61,16 @@ class User:
 
         return shifts
 
-    def add_events(self, events_to_create: t.List[EventToCreate]) -> None:
+    def add_events(self, events_to_create: t.Iterable[EventToCreate]) -> None:
         events = list(map(
-            lambda x: Event(
+            lambda e: Event(
                 event_type=EventType(
-                    in_shift=x.event_type.in_shift,
-                    is_work=x.event_type.is_work,
+                    in_shift=e.event_type.in_shift,
+                    is_work=e.event_type.is_work,
                 ),
                 interval=Interval(
-                    starts_at=x.interval.starts_at,
-                    ends_at=x.interval.ends_at,
+                    starts_at=e.interval.starts_at,
+                    ends_at=e.interval.ends_at,
                 ),
             ),
             events_to_create
@@ -78,12 +78,12 @@ class User:
         self.__check_events(tuple(chain(self._events, events)))
         self._events += events
         self._events_map.update({event.id: event for event in events})
-        self._shifts = self.make_shifts(self._events)
+        self._shifts = self.__make_shifts(self._events)
 
     def delete_event(self, event_id: UUID) -> None:
         event = self._events_map.pop(event_id)
         self._events.remove(event)
-        self._shifts = self.make_shifts(self._events)
+        self._shifts = self.__make_shifts(self._events)
 
     def update_event(self, event_id: UUID, event_to_update: EventToUpdate) -> None:
         event = self._events_map[event_id]
@@ -105,4 +105,4 @@ class User:
         self._events[self._events.index(event)] = new_event
         self._events_map[event.id] = new_event
 
-        self._shifts = self.make_shifts(self._events)
+        self._shifts = self.__make_shifts(self._events)
